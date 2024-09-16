@@ -1,0 +1,411 @@
+{
+	"info": {
+		"_postman_id": "9d4e61fa-fccf-4595-9df0-da82eb04c19a",
+		"name": "register",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "16478026"
+	},
+	"item": [
+		{
+			"name": "create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"let req = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							" req = JSON.parse(pm.request.body.raw)\r",
+							"}\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"username\")\r",
+							"    pm.expect(res).to.be.have.property(\"email\")\r",
+							"    pm.expect(res).to.be.have.property(\"job\")\r",
+							"    pm.expect(res).to.be.have.property(\"about_me\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"body content value should be correct\", ()=>{\r",
+							"    pm.expect(res.username).to.be.eql(req.username)\r",
+							"    pm.expect(res.email).to.be.eql(req.email)\r",
+							"    // pm.expect(res.job).to.be.eql(req.job)\r",
+							"    // pm.expect(res.about_me).to.be.eql(req.about_me)\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password1\": \"azerty\",\r\n    \"password2\": \"azerty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/register/"
+			},
+			"response": []
+		},
+		{
+			"name": "create user 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"non_field_errors\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"body content value should be correct\", ()=>{\r",
+							"    pm.expect(res.non_field_errors[0]).to.be.eql(\"Les mots de passe ne correspondent pas.\")\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",    \r\n    \"password1\": \"azerty\",\r\n    \"password2\": \"azertyerror\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/register/"
+			},
+			"response": []
+		},
+		{
+			"name": "create user 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"email\")\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"password1\": \"azerty\",\r\n    \"password2\": \"azerty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/register/"
+			},
+			"response": []
+		},
+		{
+			"name": "create user 4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"password1\")\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password2\": \"azerty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/register/"
+			},
+			"response": []
+		},
+		{
+			"name": "create user 5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"password2\")\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password1\": \"azerty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/register/"
+			},
+			"response": []
+		},
+		{
+			"name": "create user 6",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"let req = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							" req = JSON.parse(pm.request.body.raw)\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"username\")\r",
+							"    pm.expect(res).to.be.have.property(\"email\")\r",
+							"    pm.expect(res).to.be.have.property(\"job\")\r",
+							"    pm.expect(res).to.be.have.property(\"about_me\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"body content value should be correct\", ()=>{\r",
+							"    pm.expect(res.username).to.be.eql(req.username)\r",
+							"    pm.expect(res.email).to.be.eql(req.email)\r",
+							"    pm.expect(res.job).to.be.eql(req.job)\r",
+							"    pm.expect(res.about_me).to.be.eql(req.about_me)\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password1\": \"azerty\",\r\n    \"password2\": \"azerty\",\r\n    \"job\": \"job\",\r\n    \"about_me\": \"im a Qa testeur\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/register/"
+			},
+			"response": []
+		},
+		{
+			"name": "create user 7",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"username\")\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password1\": \"azerty\",\r\n    \"paswword2\" : \"azerty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/register/"
+			},
+			"response": []
+		}
+	]
+}

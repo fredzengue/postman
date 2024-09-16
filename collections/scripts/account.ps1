@@ -1,0 +1,1 @@
+newman run ../account.postman_collection.json -e ../../env/logwire4.postman_environment.json -r allure

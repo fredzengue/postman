@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "6635379d-db34-408f-a1cf-21aa843dfb15",
+		"name": "posts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "16478026"
+	},
+	"item": [
+		{
+			"name": "get all posts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(item => {",
+							"        pm.expect(item).to.have.property('id');",
+							"        pm.expect(item).to.have.property('comments');",
+							"        pm.expect(item).to.have.property('title');",
+							"        pm.expect(item).to.have.property('content');",
+							"        pm.expect(item).to.have.property('created_at');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Comments array is present\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(post => {",
+							"        pm.expect(post.comments).to.exist;",
+							"        pm.expect(post.comments).to.be.an('array');",
+							"        // pm.expect(post.comments).to.have.lengthOf.at.least(1);",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Comments have non-empty 'user', 'content', and 'created_at'\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(post => {",
+							"        pm.expect(post.comments).to.be.an('array');",
+							"        post.comments.forEach(comment => {",
+							"            pm.expect(comment.user).to.be.a('string').and.to.have.lengthOf.at.least(1, \"User should not be empty\");",
+							"            pm.expect(comment.content).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Content should not be empty\");",
+							"            pm.expect(comment.created_at).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Created_at should not be empty\");",
+							"        });",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Created_at date format is valid\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    responseData.forEach(function(post) {",
+							"        pm.expect(post.created_at).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}Z$/);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{URL}}{{URI_PATH}}"
+			},
+			"response": []
+		},
+		{
+			"name": "get single post",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id field should exist and be a number\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.id).to.exist;",
+							"    pm.expect(responseData.id).to.be.a('number');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Comments array is present \", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.comments).to.exist.and.to.be.an('array');",
+							"    // pm.expect(responseData.comments.length).to.equal(1);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Comments array user, content, and created_at fields are non-empty strings\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.comments).to.be.an('array');",
+							"    ",
+							"    responseData.comments.forEach(function(comment) {",
+							"        pm.expect(comment.user).to.be.a('string').and.to.have.lengthOf.at.least(1, \"User should not be empty\");",
+							"        pm.expect(comment.content).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Content should not be empty\");",
+							"        pm.expect(comment.created_at).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Created_at should not be empty\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Title, content, and created_at fields must be non-empty strings\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Title should not be empty\");",
+							"  pm.expect(responseData.content).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Content should not be empty\");",
+							"  pm.expect(responseData.created_at).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Created_at should not be empty\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{URL}}{{URI_PATH}}/1"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URI_PATH",
+			"value": "/posts",
+			"type": "string"
+		}
+	]
+}

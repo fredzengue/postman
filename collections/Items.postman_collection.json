@@ -1,0 +1,1089 @@
+{
+	"info": {
+		"_postman_id": "99ff4f5c-80a8-4b4c-87f2-397e022acfd8",
+		"name": "Items",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "16478026"
+	},
+	"item": [
+		{
+			"name": "Correct tests",
+			"item": [
+				{
+					"name": "create item with all field valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"let res = null\r",
+									"let req = null\r",
+									"if(pm.response.code !== 500){\r",
+									" res = pm.response.json()\r",
+									" req = JSON.parse(pm.request.body.raw)\r",
+									"}\r",
+									"let skipTest = pm.environment.get(\"skipTestE2E\")\r",
+									"\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    skipTest ++\r",
+									"    pm.expect(res).to.be.have.property(\"id\")\r",
+									"    pm.expect(res).to.be.have.property(\"title\")\r",
+									"    pm.expect(res).to.be.have.property(\"description\")\r",
+									"    skipTest --\r",
+									"})\r",
+									"\r",
+									"pm.test(\"body content value should be correct\", ()=>{\r",
+									"    skipTest ++\r",
+									"    pm.expect(res.title).to.be.eql(req.title)\r",
+									"    pm.expect(res.description).to.be.eql(req.description)\r",
+									"    skipTest --\r",
+									"    pm.environment.set(\"skipTestE2E\", skipTest)\r",
+									"})\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"skipTestE2E\", 0)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"asus\",\r\n  \"description\": \"john doe pc\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}{{uri_path}}"
+					},
+					"response": []
+				},
+				{
+					"name": "read items with no params",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const res = pm.response.json()\r",
+									"    let skipTest = pm.environment.get(\"skipTestE2E\")\r",
+									"pm.test(\"response body should be an array\", ()=>{\r",
+									"    skipTest ++\r",
+									"   pm.expect(res).to.be.an('array')\r",
+									"   skipTest --\r",
+									"   \r",
+									"})\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    skipTest ++\r",
+									"    pm.expect(res[0]).to.be.have.property(\"id\")\r",
+									"    pm.expect(res[0]).to.be.have.property(\"title\")\r",
+									"    pm.expect(res[0]).to.be.have.property(\"description\")\r",
+									"    skipTest --\r",
+									"})\r",
+									"pm.test(\"data length should be correct\", ()=>{\r",
+									"    skipTest ++\r",
+									"    pm.expect(res.length).to.be.lessThan(11)\r",
+									"    skipTest --\r",
+									"})\r",
+									"pm.environment.set(\"skipTestE2E\", skipTest)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}{{uri_path}}"
+					},
+					"response": []
+				},
+				{
+					"name": "read items with limit param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const res = pm.response.json()\r",
+									"pm.test(\"response body should be an array\", ()=>{\r",
+									"   pm.expect(res).to.be.an('array')\r",
+									"})\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    pm.expect(res[0]).to.be.have.property(\"id\")\r",
+									"    pm.expect(res[0]).to.be.have.property(\"title\")\r",
+									"    pm.expect(res[0]).to.be.have.property(\"description\")\r",
+									"})\r",
+									"pm.test(\"data length should be correct\", ()=>{\r",
+									"    pm.expect(res.length).to.be.lessThan(6)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}{{uri_path}}?limit=5",
+							"host": [
+								"{{URL}}{{uri_path}}"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read items with skip param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const res = pm.response.json()\r",
+									"pm.test(\"response body should be an array\", ()=>{\r",
+									"   pm.expect(res).to.be.an('array')\r",
+									"})\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    pm.expect(res[0]).to.be.have.property(\"id\")\r",
+									"    pm.expect(res[0]).to.be.have.property(\"title\")\r",
+									"    pm.expect(res[0]).to.be.have.property(\"description\")\r",
+									"})\r",
+									"pm.test(\"data length should be correct\", ()=>{\r",
+									"    pm.expect(res.length).to.be.lessThan(11)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}{{uri_path}}?skip=5",
+							"host": [
+								"{{URL}}{{uri_path}}"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read items with skip & limit params",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const res = pm.response.json()\r",
+									"pm.test(\"response body should be an array\", ()=>{\r",
+									"   pm.expect(res).to.be.an('array')\r",
+									"})\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    pm.expect(res[0]).to.be.have.property(\"id\")\r",
+									"    pm.expect(res[0]).to.be.have.property(\"title\")\r",
+									"    pm.expect(res[0]).to.be.have.property(\"description\")\r",
+									"})\r",
+									"pm.test(\"data length should be correct\", ()=>{\r",
+									"    pm.expect(res.length).to.be.lessThan(6)\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}{{uri_path}}?skip=2&limit=5",
+							"host": [
+								"{{URL}}{{uri_path}}"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "read item single item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"const id = pm.iterationData.get(\"id\")\r",
+									"const title = pm.iterationData.get(\"title\")\r",
+									"const description = pm.iterationData.get(\"description\")\r",
+									"\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    try {\r",
+									"    pm.expect(res).to.be.have.property(\"id\")\r",
+									"    pm.expect(res).to.be.have.property(\"title\")\r",
+									"    pm.expect(res).to.be.have.property(\"description\")\r",
+									"pm.collectionVariables.set('skipTest', false)\r",
+									"    }catch{\r",
+									"        pm.collectionVariables.set(\"skipTest\", true)\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"pm.test(\"body content value should be correct\", ()=>{\r",
+									"\r",
+									"    try {\r",
+									"    pm.expect(res.id).to.be.eql(id)\r",
+									"    pm.expect(res.title).to.be.eql(title)\r",
+									"    pm.expect(res.description).to.be.eql(description)\r",
+									"    pm.collectionVariables.set('skipTest', false)\r",
+									"\r",
+									"    }catch {\r",
+									"        pm.collectionVariables.set('skipTest', true)\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}{{uri_path}}/{{id}}",
+							"host": [
+								"{{URL}}{{uri_path}}"
+							],
+							"path": [
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "item_id",
+									"value": "46",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update item with item_id param & valid param json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"const req = JSON.parse(pm.request.body.raw)\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"\r",
+									"    pm.expect(res).to.be.have.property(\"id\")\r",
+									"    pm.expect(res).to.be.have.property(\"title\")\r",
+									"    pm.expect(res).to.be.have.property(\"description\")\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"body content value should be correct\", ()=>{\r",
+									"    pm.expect(res.id).to.be.eql(pm.iterationData.get('id'))\r",
+									"    pm.expect(res.title).to.be.eql(req.title)\r",
+									"    pm.expect(res.description).to.be.eql(req.description)\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"string\",\r\n  \"description\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}{{uri_path}}/{{id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "patch item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"const req = JSON.parse(pm.request.body.raw)\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"\r",
+									"    pm.expect(res).to.be.have.property(\"id\")\r",
+									"    pm.expect(res).to.be.have.property(\"title\")\r",
+									"    pm.expect(res).to.be.have.property(\"description\")\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"body content value should be correct\", ()=>{\r",
+									"    pm.expect(res.id).to.be.eql(pm.iterationData.get('id'))\r",
+									"    pm.expect(res.title).to.be.eql(req.title)\r",
+									"    pm.expect(res.description).to.be.eql(req.description)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"title edit\",\r\n  \"description\": \"description edit\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}{{uri_path}}/{{id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "delete item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"const id = pm.iterationData.get(\"id\")\r",
+									"const title = pm.iterationData.get(\"title\")\r",
+									"const description = pm.iterationData.get(\"description\")\r",
+									"\r",
+									"let skipTest =  pm.environment.get(\"skipTestE2E\")\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    skipTest ++\r",
+									"    pm.expect(res).to.be.have.property(\"id\")\r",
+									"    pm.expect(res).to.be.have.property(\"title\")\r",
+									"    pm.expect(res).to.be.have.property(\"description\")\r",
+									"    pm.collectionVariables.set('skipTest', false)\r",
+									"    skipTest --\r",
+									"\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"body content value should be correct\", ()=>{\r",
+									"    skipTest ++\r",
+									"    pm.expect(res.id).to.be.eql(pm.iterationData.get('id'))\r",
+									"    skipTest --\r",
+									"})\r",
+									"pm.environment.set(\"skipTestE2E\", skipTest)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{URL}}{{uri_path}}/{{id}}"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"let skipTest = pm.environment.get(\"skipTestE2E\")\r",
+							"\r",
+							"pm.test(\"response code should be 200\", ()=>{\r",
+							"    skipTest ++\r",
+							"    pm.response.to.have.status(200)\r",
+							"    skipTest --\r",
+							"})\r",
+							"\r",
+							"pm.test(\"content-type should be a json object\", ()=>{\r",
+							"    skipTest ++\r",
+							"    const contentType = pm.response.headers.get(\"content-type\")\r",
+							"    pm.expect(contentType).to.be.eql(\"application/json\")\r",
+							"    skipTest --\r",
+							"})\r",
+							"\r",
+							"pm.environment.set(\"skipTestE2E\", skipTest)\r",
+							"\r",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Error tests",
+			"item": [
+				{
+					"name": "create item with no title body param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    let res = null\r",
+									"    let detail = null\r",
+									"   if(pm.response.code === 422){\r",
+									"\r",
+									"    res = pm.response.json()\r",
+									"    detail = res.detail[0]\r",
+									"   }\r",
+									"\r",
+									"    pm.expect(res).to.be.have.property(\"detail\")\r",
+									"    pm.expect(res.detail.length).to.be.eql(1)\r",
+									"    pm.expect(detail).to.be.have.property(\"loc\")\r",
+									"    pm.expect(detail).to.be.have.property(\"msg\")\r",
+									"    pm.expect(detail).to.be.have.property(\"type\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"john doe pc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}{{uri_path}}"
+					},
+					"response": []
+				},
+				{
+					"name": "create item with no description body param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    let res = null\r",
+									"    let detail = null\r",
+									"   if(pm.response.code === 422){\r",
+									"\r",
+									"    res = pm.response.json()\r",
+									"    detail = res.detail[0]\r",
+									"   }\r",
+									"    pm.expect(res).to.be.have.property(\"detail\")\r",
+									"    pm.expect(res.detail.length).to.be.eql(1)\r",
+									"    pm.expect(detail).to.be.have.property(\"loc\")\r",
+									"    pm.expect(detail).to.be.have.property(\"msg\")\r",
+									"    pm.expect(detail).to.be.have.property(\"type\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"asus rog\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}{{uri_path}}"
+					},
+					"response": []
+				},
+				{
+					"name": "create item with empty json  body param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"   let res = null\r",
+									"    let detail = null\r",
+									"   if(pm.response.code === 422){\r",
+									"\r",
+									"    res = pm.response.json()\r",
+									"    detail = res.detail[0]\r",
+									"   }\r",
+									"\r",
+									"    pm.expect(res).to.be.have.property(\"detail\")\r",
+									"    pm.expect(res.detail.length).to.be.eql(2)\r",
+									"    pm.expect(detail).to.be.have.property(\"loc\")\r",
+									"    pm.expect(detail).to.be.have.property(\"msg\")\r",
+									"    pm.expect(detail).to.be.have.property(\"type\")\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}{{uri_path}}"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"response code should be 422\", ()=>{\r",
+							"    pm.response.to.have.status(422)\r",
+							"})\r",
+							"pm.test(\"content-type should be a json object\", ()=>{\r",
+							"    const contentType = pm.response.headers.get(\"content-type\")\r",
+							"    pm.expect(contentType).to.be.eql(\"application/json\")\r",
+							"})"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "E2E",
+			"item": [
+				{
+					"name": "create item with all field valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = null\r",
+									"let req = null\r",
+									"if(pm.response.code !== 500){\r",
+									" res = pm.response.json()\r",
+									" req = JSON.parse(pm.request.body.raw)\r",
+									"}\r",
+									"const skipTest =  pm.environment.get(\"skipTestE2E\");\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"response code should be 200\", ()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"content-type should be a json object\", ()=>{\r",
+									"    const contentType = pm.response.headers.get(\"content-type\")\r",
+									"    pm.expect(contentType).to.be.eql(\"application/json\")\r",
+									"});\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"response body should be conform\", ()=>{\r",
+									"    const res = pm.response.json()\r",
+									"\r",
+									"    pm.expect(res).to.be.have.property(\"id\")\r",
+									"    pm.expect(res).to.be.have.property(\"title\")\r",
+									"    pm.expect(res).to.be.have.property(\"description\")\r",
+									"});\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"body content value should be correct\", ()=>{\r",
+									"    pm.expect(res.title).to.be.eql(req.title)\r",
+									"    pm.expect(res.description).to.be.eql(req.description)\r",
+									"    pm.collectionVariables.set(\"item_id\", res.id)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"{{title}}\",\r\n  \"description\": \"{{description}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}{{uri_path}}"
+					},
+					"response": []
+				},
+				{
+					"name": "read item single item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const skipTest =  pm.environment.get(\"skipTestE2E\")\r",
+									"const res = pm.response.json()\r",
+									"const title = pm.iterationData.get(\"title\")\r",
+									"const description = pm.iterationData.get(\"description\");\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"response code should be 200\", ()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"content-type should be a json object\", ()=>{\r",
+									"    const contentType = pm.response.headers.get(\"content-type\")\r",
+									"    pm.expect(contentType).to.be.eql(\"application/json\")\r",
+									"});\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"response body should be conform\", ()=>{\r",
+									"\r",
+									"    pm.expect(res).to.be.have.property(\"id\")\r",
+									"    pm.expect(res).to.be.have.property(\"title\")\r",
+									"    pm.expect(res).to.be.have.property(\"description\")\r",
+									"});\r",
+									"\r",
+									"(skipTest ? pm.test.skip : pm.test)(\"body content value should be correct\", ()=>{\r",
+									"    pm.expect(res.id).to.be.eql(pm.collectionVariables.get(\"item_id\"))\r",
+									"    pm.expect(res.title).to.be.eql(title)\r",
+									"    pm.expect(res.description).to.be.eql(description)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}{{uri_path}}/{{item_id}}",
+							"host": [
+								"{{URL}}{{uri_path}}"
+							],
+							"path": [
+								"{{item_id}}"
+							],
+							"query": [
+								{
+									"key": "item_id",
+									"value": "46",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"const title = pm.iterationData.get(\"title\")\r",
+									"const description = pm.iterationData.get(\"description\")\r",
+									"const skipTest =  pm.environment.get(\"skipTestE2E\");\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"response code should be 200\", ()=>{\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"content-type should be a json object\", ()=>{\r",
+									"    const contentType = pm.response.headers.get(\"content-type\")\r",
+									"    pm.expect(contentType).to.be.eql(\"application/json\")\r",
+									"});\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"response body should be conform\", ()=>{\r",
+									"    const res = pm.response.json()\r",
+									"\r",
+									"    pm.expect(res).to.be.have.property(\"id\")\r",
+									"    pm.expect(res).to.be.have.property(\"title\")\r",
+									"    pm.expect(res).to.be.have.property(\"description\")\r",
+									"});\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"body content value should be correct\", ()=>{\r",
+									"    pm.expect(res.id).to.be.eql(pm.collectionVariables.get(\"item_id\"))\r",
+									"    pm.expect(res.title).to.be.eql(title)\r",
+									"    pm.expect(res.description).to.be.eql(description)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{URL}}{{uri_path}}/{{item_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "read item single item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json()\r",
+									"const skipTest =  pm.environment.get(\"skipTestE2E\");\r",
+									"\r",
+									"(skipTest > 0 ? pm.test.skip : pm.test)(\"response code should be 404\", ()=>{\r",
+									"    pm.response.to.have.status(404)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}{{uri_path}}/{{item_id}}",
+							"host": [
+								"{{URL}}{{uri_path}}"
+							],
+							"path": [
+								"{{item_id}}"
+							],
+							"query": [
+								{
+									"key": "item_id",
+									"value": "46",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "uri_path",
+			"value": "/items"
+		},
+		{
+			"key": "item_id",
+			"value": "46",
+			"type": "string"
+		},
+		{
+			"key": "skipTest",
+			"value": "true",
+			"type": "string"
+		}
+	]
+}

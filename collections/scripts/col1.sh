@@ -1,0 +1,1 @@
+newman run col1.postman_collection.json -e ../env/reqres_in.postman_environment.json --export-environment ../env/reqres_in_bis.postman_environment.json -r allure

@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "75326b79-bb15-450c-99f7-98be7c2361a3",
+		"name": "login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "16478026"
+	},
+	"item": [
+		{
+			"name": "A&B Copy",
+			"item": [
+				{
+					"name": "create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = null\r",
+									"let req = null\r",
+									"if(pm.response.code !== 500){\r",
+									" res = pm.response.json()\r",
+									" req = JSON.parse(pm.request.body.raw)\r",
+									"}\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    pm.expect(res).to.be.have.property(\"username\")\r",
+									"    pm.expect(res).to.be.have.property(\"email\")\r",
+									"    pm.expect(res).to.be.have.property(\"job\")\r",
+									"    pm.expect(res).to.be.have.property(\"about_me\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"body content value should be correct\", ()=>{\r",
+									"    pm.expect(res.username).to.be.eql(req.username)\r",
+									"    pm.expect(res.email).to.be.eql(req.email)\r",
+									"    // pm.expect(res.job).to.be.eql(req.job)\r",
+									"    // pm.expect(res.about_me).to.be.eql(req.about_me)\r",
+									"})\r",
+									"pm.collectionVariables.set(\"userName\", res.username)\r",
+									"pm.collectionVariables.set(\"password\", req.password1)\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password1\": \"azerty\",\r\n    \"password2\": \"azerty\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/register/"
+					},
+					"response": []
+				},
+				{
+					"name": "login with username and password correct",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let res = null\r",
+									"if(pm.response.code !== 500){\r",
+									" res = pm.response.json()\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body should be conform\", ()=>{\r",
+									"    pm.expect(res).to.be.have.property(\"refresh\")\r",
+									"    pm.expect(res).to.be.have.property(\"access\")\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/login/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login with username correct and password incorrect",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 402\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"detail\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"body content value should be correct\", ()=>{\r",
+							"    pm.expect(res.detail).to.be.eql(\"No active account found with the given credentials\")\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"johndoe\",\r\n    \"password\": \"azertyincorrect\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/login/"
+			},
+			"response": []
+		},
+		{
+			"name": "login with username  incorrect and password correct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 402\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"detail\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"body content value should be correct\", ()=>{\r",
+							"    pm.expect(res.detail).to.be.eql(\"No active account found with the given credentials\")\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"johndoe incorect\",\r\n    \"password\": \"azerty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/login/"
+			},
+			"response": []
+		},
+		{
+			"name": "login with username and password correct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = null\r",
+							"if(pm.response.code !== 500){\r",
+							" res = pm.response.json()\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body should be conform\", ()=>{\r",
+							"    pm.expect(res).to.be.have.property(\"refresh\")\r",
+							"    pm.expect(res).to.be.have.property(\"access\")\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"johndoe\",\r\n    \"password\": \"azerty\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/login/"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userName",
+			"value": "johndoe",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "azerty",
+			"type": "string"
+		}
+	]
+}
