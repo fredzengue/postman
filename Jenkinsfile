@@ -1,13 +1,13 @@
 pipeline {
-    agent { docker 'node:hydrogen-alpine' }
+    agent { docker 'postman/newman:alpine' }
 
     stages {
-        stage('Install Dependencies') {
-            steps {
-                // Install Newman and any required dependencies
-                sh 'npm install -g newman'
-            }
-        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         // Install Newman and any required dependencies
+        //         sh 'npm install -g newman'
+        //     }
+        // }
         
         stage('Run API Tests') {
             steps {
