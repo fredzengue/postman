@@ -12,7 +12,10 @@ pipeline {
         stage('Run API Tests') {
             steps {
                 // Run the Postman collection using Newman
-                sh './collections/scripts/regression.sh'
+                sh '''
+                    newman run collections/register.postman_collection.json \
+                    --reporters allure 
+                    '''
             }
         }
     }
@@ -22,7 +25,7 @@ pipeline {
                     allure includeProperties:
                      false,
                      jdk: '',
-                     results: [[path: 'build/allure-results']]
+                     results: [[path: 'collections/allure-results']]
                 }
             }
 }
