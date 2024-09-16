@@ -2,17 +2,17 @@ pipeline {
     agent { docker 'postman/newman:alpine' }
 
     stages {
-        // stage('Install Dependencies') {
-        //     steps {
-        //         // Install Newman and any required dependencies
-        //         sh 'npm install -g newman'
-        //     }
-        // }
+        stage('check version of newman') {
+            steps {
+                // Install Newman and any required dependencies
+                sh 'newman -v'
+            }
+        }
         
         stage('Run API Tests') {
             steps {
                 // Run the Postman collection using Newman
-                sh '/collections/scripts/regression.sh'
+                sh './collections/scripts/regression.sh'
             }
         }
     }
