@@ -2,12 +2,12 @@ pipeline {
     agent { docker 'postman/newman:alpine' }
 
     stages {
-        stage('check version of newman') {
-            steps {
-                // Install Newman and any required dependencies
-                sh 'newman -v'
-            }
-        }
+        // stage('check version of newman') {
+        //     steps {
+        //         // Install Newman and any required dependencies
+        //         sh 'newman -v'
+        //     }
+        // }
         
         stage('Run API Tests') {
             steps {
